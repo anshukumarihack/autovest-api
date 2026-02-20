@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 # 1. Define Input Schema using Pydantic
@@ -16,6 +17,14 @@ class AutoVestRequest(BaseModel):
 # 2. Initialize FastAPI App
 app = FastAPI(title="AutoVest Decision Engine", version="1.0.0")
 
+# 2. ADD THIS ENTIRE CORS BLOCK
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # This allows any website to connect to your API
+    allow_credentials=True,
+    allow_methods=["*"],  # This allows POST requests
+    allow_headers=["*"],
+)
 # 3. Load Model safely on startup
 model = None
 
